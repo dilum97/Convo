@@ -223,7 +223,7 @@
             font-weight: 600;
             font-size: 1.2em;
             cursor: pointer;
-            object-fit: cover;
+            objectfit: cover;
             transition: all 0.3s ease;
         }
 
@@ -336,7 +336,7 @@
             justify-content: center;
             font-weight: 600;
             flex-shrink: 0;
-            object-fit: cover;
+            objectfit: cover;
         }
 
         .contact-info {
@@ -384,7 +384,7 @@
             justify-content: center;
             font-weight: 600;
             font-size: 1.5em;
-            object-fit: cover;
+            objectfit: cover;
         }
 
         .chat-header-info h2 {
@@ -605,7 +605,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            object-fit: cover;
+            objectfit: cover;
             margin: 20px auto;
             display: block;
             background: #667eea;
@@ -939,7 +939,7 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    document.getElementById('profilePreview').innerHTML = `<img src="${e.target.result}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">`;
+                    document.getElementById('profilePreview').innerHTML = `<img src="${e.target.result}" style="width: 80px; height: 80px; border-radius: 50%; objectfit: cover;">`;
                     uploadProfileToCloudinary(file);
                 };
                 reader.readAsDataURL(file);
@@ -1008,7 +1008,7 @@
                     const avatar = document.getElementById('userAvatarHeader');
                     if (profile.photo && profile.photo.startsWith('http')) {
                         avatar.src = profile.photo;
-                        avatar.style.object-fit = 'cover';
+                        avatar.style.objectfit = 'cover';
                     } else {
                         avatar.textContent = profile.name.charAt(0).toUpperCase();
                     }
@@ -1040,7 +1040,7 @@
 
             list.innerHTML = contacts.map(contact => {
                 const avatar = contact.photo && contact.photo.startsWith('http') ? 
-                    `<img src="${contact.photo}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">` :
+                    `<img src="${contact.photo}" style="width: 45px; height: 45px; border-radius: 50%; objectfit: cover;">` :
                     `<div class="contact-avatar">${contact.name.charAt(0).toUpperCase()}</div>`;
                 
                 return `
