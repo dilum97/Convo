@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="cross-origin-opener-policy" content="same-origin-allow-popups">
     <meta name="theme-color" content="#667eea">
     <meta name="description" content="Convo - Real-time Chat Application">
     <link rel="manifest" href="manifest.json">
@@ -224,7 +223,7 @@
             font-weight: 600;
             font-size: 1.2em;
             cursor: pointer;
-            objectfit: cover;
+            object-fit: cover;
             transition: all 0.3s ease;
         }
 
@@ -337,7 +336,7 @@
             justify-content: center;
             font-weight: 600;
             flex-shrink: 0;
-            objectfit: cover;
+            object-fit: cover;
         }
 
         .contact-info {
@@ -385,7 +384,7 @@
             justify-content: center;
             font-weight: 600;
             font-size: 1.5em;
-            objectfit: cover;
+            object-fit: cover;
         }
 
         .chat-header-info h2 {
@@ -606,7 +605,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            objectfit: cover;
+            object-fit: cover;
             margin: 20px auto;
             display: block;
             background: #667eea;
@@ -678,17 +677,25 @@
         }
 
         @media (max-width: 768px) {
+            .container {
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
             .sidebar {
                 width: 100%;
-                position: absolute;
+                position: fixed;
                 height: 100%;
                 z-index: 20;
                 left: -100%;
                 transition: left 0.3s ease;
+                background: #f8f9fa;
             }
 
             .sidebar.show {
                 left: 0;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             }
 
             .chat-area {
@@ -710,6 +717,73 @@
             .modal-content {
                 padding: 20px;
                 width: 95%;
+            }
+
+            .screen {
+                padding: 20px;
+            }
+
+            .screen h1 {
+                font-size: 2em;
+            }
+
+            .btn-primary {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .screen h1 {
+                font-size: 1.8em;
+            }
+
+            .screen p {
+                font-size: 1em;
+            }
+
+            .setup-form {
+                max-width: 100%;
+                padding: 15px;
+                border-radius: 10px;
+            }
+
+            .setup-form h2 {
+                font-size: 1.5em;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.2em;
+            }
+
+            .search-box {
+                padding: 10px;
+            }
+
+            .contact-item {
+                padding: 10px;
+            }
+
+            .chat-header {
+                padding: 15px;
+            }
+
+            .messages-container {
+                padding: 10px;
+            }
+
+            .input-area {
+                padding: 10px;
+                flex-wrap: wrap;
+            }
+
+            .message-content {
+                max-width: 90%;
+                font-size: 0.9em;
             }
         }
     </style>
@@ -762,6 +836,7 @@
             <div class="header">
                 <h1>Convo</h1>
                 <div class="header-actions">
+                    <button id="mobileMenuBtn" class="menu-btn" onclick="toggleSidebarOnMobile()" style="display:none;">☰</button>
                     <img id="userAvatarHeader" class="user-avatar-header" onclick="toggleMenu(event)">
                     <button class="menu-btn" onclick="toggleMenu(event)">⋮</button>
                     <div id="dropdownMenu" class="dropdown-menu hidden">
@@ -852,14 +927,13 @@
     <script>
         // Firebase Config
         const firebaseConfig = {
-            apiKey: "AIzaSyAKpSaYYDV1Z850ojFdyGc_GyJ5O8NU2H4",
+            apiKey: "AIzaSyDvxxx",
             authDomain: "convo-e848d.firebaseapp.com",
             projectId: "convo-e848d",
-            storageBucket: "convo-e848d.firebasestorage.app",
+            storageBucket: "convo-e848d.appspot.com",
             messagingSenderId: "779520974261",
             appId: "1:779520974261:web:eb272a82a8b431b4f98dfc",
-            measurementId: "G-NZNPVT5VM9",
-            databaseURL: "https://convo-e848d-default-rtdb.asia-southeast1.firebasedatabase.app"
+            measurementId: "G-NZNPVT5VM9"
         };
 
         // Cloudinary Config
@@ -941,7 +1015,7 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    document.getElementById('profilePreview').innerHTML = `<img src="${e.target.result}" style="width: 80px; height: 80px; border-radius: 50%; objectfit: cover;">`;
+                    document.getElementById('profilePreview').innerHTML = `<img src="${e.target.result}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">`;
                     uploadProfileToCloudinary(file);
                 };
                 reader.readAsDataURL(file);
@@ -1010,7 +1084,7 @@
                     const avatar = document.getElementById('userAvatarHeader');
                     if (profile.photo && profile.photo.startsWith('http')) {
                         avatar.src = profile.photo;
-                        avatar.style.objectfit = 'cover';
+                        avatar.style.objectFit = 'cover';
                     } else {
                         avatar.textContent = profile.name.charAt(0).toUpperCase();
                     }
@@ -1042,7 +1116,7 @@
 
             list.innerHTML = contacts.map(contact => {
                 const avatar = contact.photo && contact.photo.startsWith('http') ? 
-                    `<img src="${contact.photo}" style="width: 45px; height: 45px; border-radius: 50%; objectfit: cover;">` :
+                    `<img src="${contact.photo}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">` :
                     `<div class="contact-avatar">${contact.name.charAt(0).toUpperCase()}</div>`;
                 
                 return `
@@ -1315,6 +1389,59 @@
                 document.getElementById('dropdownMenu').classList.add('hidden');
             }
         });
+
+        // Mobile Swipe Functionality
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const sidebar = document.querySelector('.sidebar');
+        const chatArea = document.querySelector('.chat-area');
+        const container = document.querySelector('.container');
+
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        container.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            // Right to Left swipe - hide sidebar
+            if (diff > swipeThreshold) {
+                sidebar.classList.remove('show');
+            }
+            // Left to Right swipe - show sidebar
+            else if (diff < -swipeThreshold) {
+                sidebar.classList.add('show');
+            }
+        }
+
+        // Toggle sidebar on small screens
+        function toggleSidebarOnMobile() {
+            const width = window.innerWidth;
+            if (width <= 768) {
+                document.querySelector('.sidebar').classList.toggle('show');
+            }
+        }
+
+        // Show mobile menu button on small screens
+        function updateMobileMenuButton() {
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            if (window.innerWidth <= 768) {
+                mobileBtn.style.display = 'block';
+            } else {
+                mobileBtn.style.display = 'none';
+                document.querySelector('.sidebar').classList.remove('show');
+            }
+        }
+
+        // Update on load and resize
+        window.addEventListener('load', updateMobileMenuButton);
+        window.addEventListener('resize', updateMobileMenuButton);
     </script>
 </body>
 </html>
