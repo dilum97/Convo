@@ -1,7 +1,7 @@
 const CACHE_NAME = 'convo-v1';
 const urlsToCache = [
   '/',
-  '/convo-complete.html',
+  '/index.html',
   '/manifest.json'
 ];
 
