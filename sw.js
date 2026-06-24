@@ -3,6 +3,7 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json'
+  '/icon.png'
 ];
 
 // Install event
