@@ -999,9 +999,20 @@
             document.getElementById('authScreen').classList.add('hidden');
             document.getElementById('setupScreen').classList.add('hidden');
             document.getElementById('appContainer').classList.remove('hidden');
+            
+            // Set user online status
+            db.ref('users/' + currentUser.uid + '/online').set(true);
+            
             loadUserProfile();
             loadContacts();
         }
+
+        // Set offline when user leaves
+        window.addEventListener('beforeunload', () => {
+            if (currentUser) {
+                db.ref('users/' + currentUser.uid + '/online').set(false);
+            }
+        });
 
         function loadUserProfile() {
             db.ref('users/' + currentUser.uid).once('value', snapshot => {
@@ -1042,8 +1053,10 @@
 
             list.innerHTML = contacts.map(contact => {
                 const avatar = contact.photo && contact.photo.startsWith('http') ? 
-                    `<img src="${contact.photo}" style="width: 45px; height: 45px; border-radius: 50%; objectfit: cover;">` :
+                    `<img src="${contact.photo}" style="width: 45px; height: 45px; border-radius: 50%; objectFit: cover;">` :
                     `<div class="contact-avatar">${contact.name.charAt(0).toUpperCase()}</div>`;
+                
+                const status = contact.online ? '🟢 Online' : '🔘 Offline';
                 
                 return `
                     <div class="contact-item" onclick="startChat('${contact.uid}', '${contact.name}', '${contact.photo}', '${contact.dob}', '${contact.gender}')">
@@ -1051,6 +1064,7 @@
                         <div class="contact-info">
                             <div class="contact-name">${contact.name}</div>
                             <div class="contact-preview">${contact.email}</div>
+                            <div style="font-size: 0.75em; color: #667eea; margin-top: 3px;">${status}</div>
                         </div>
                     </div>
                 `;
